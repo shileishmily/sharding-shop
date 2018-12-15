@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suixingpay.sharding.shop.mapper.OrderMapper">
+    <resultMap id="orderResultMap" type="com.suixingpay.sharding.shop.pojo.Order">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="tcd" property="tcd" jdbcType="VARCHAR"/>
+        <result column="sys_id" property="sysId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insertOrder" parameterType="com.suixingpay.sharding.shop.pojo.Order" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into order (order_id,user_id,product_name,create_time,tcd,sys_id)
+        values (#{orderId,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER},#{productName,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{tcd,jdbcType=VARCHAR},#{sysId,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="selectOrderByUserIdAndOrderId" resultMap="orderResultMap" parameterType="hashmap">
+        SELECT id,order_id,user_id,product_name,create_time,tcd,sys_id from order where order_id=#{orderId} and tcd=#{tcd}
+    </select>
+
+</mapper>
